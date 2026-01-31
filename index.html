@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <style>
+        body{
+            background-color: gray;
+        }
+
+        .add-btn,
+        .remove-btn {
+            position: absolute;
+            bottom: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 22px;
+            line-height: 1;
+        }
+
+        .add-btn {
+            left: 10px;
+        }
+
+        .remove-btn {
+            right: 10px;
+        }
+
+        .box {
+            position: relative;
+            padding-bottom: 70px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand h2" href="#">SWOT Analysis</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="https://www.linkedin.com/in/karthick-a-b60832238/"><i
+                                class="bi bi-linkedin"></i>
+                        </a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://github.com/karthickag18"><i
+                                class="bi bi-github"></i>
+                        </a></li>
+                    <li class="nav-item"><a class="nav-link" href="mailto:karthickag18@gmail.com"><i
+                                class="bi bi-envelope-fill"></i>
+                        </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Margin Top to Fix Navbar Overlap -->
+    <div class="container mt-5 pt-5">
+        <div class="row g-4"> <!-- g-4 = gap between boxes -->
+
+            <div class="col-md-6">
+                <div class="border shadow rounded p-4 bg-light box">
+                    <h2 class="mb-3">Strength</h2>
+
+                    <div class="input-area">
+                        <input type="text" class="form-control mb-3">
+                        <input type="text" class="form-control mb-3">
+                        <input type="text" class="form-control mb-3">
+                    </div>
+
+                    <button class="btn btn-primary add-btn" onclick="addInput(this)">+</button>
+                    <button class="btn btn-danger remove-btn" onclick="removeInput(this)">−</button>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-6">
+                <div class="border shadow rounded p-4 bg-light box">
+                    <h2 class="mb-3">Weakness</h2>
+
+                    <div class="input-area">
+                        <input type="text" class="form-control mb-3">
+                        <input type="text" class="form-control mb-3">
+                        <input type="text" class="form-control mb-3">
+                    </div>
+
+                    <button class="btn btn-primary add-btn" onclick="addInput(this)">+</button>
+                    <button class="btn btn-danger remove-btn" onclick="removeInput(this)">−</button>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="border shadow rounded p-4 bg-light box">
+                    <h2 class="mb-3">Oppurtunity</h2>
+
+                    <div class="input-area">
+                        <input type="text" class="form-control mb-3">
+                        <input type="text" class="form-control mb-3">
+                        <input type="text" class="form-control mb-3">
+                    </div>
+
+                    <button class="btn btn-primary add-btn" onclick="addInput(this)">+</button>
+                    <button class="btn btn-danger remove-btn" onclick="removeInput(this)">−</button>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="border shadow rounded p-4 bg-light box">
+                    <h2 class="mb-3">Threads</h2>
+
+                    <div class="input-area">
+                        <input type="text" class="form-control mb-3">
+                        <input type="text" class="form-control mb-3">
+                        <input type="text" class="form-control mb-3">
+                    </div>
+
+                    <button class="btn btn-primary add-btn" onclick="addInput(this)">+</button>
+                    <button class="btn btn-danger remove-btn" onclick="removeInput(this)">−</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="text-center mt-5">
+            <button class="btn btn-success px-5 mb-3" onclick="saveAllData()">
+                <i class="bi bi-save"></i> Save
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        function addInput(button) {
+            const box = button.closest('.box');
+            const inputArea = box.querySelector('.input-area');
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'form-control mb-3';
+
+            inputArea.appendChild(input);
+        }
+
+        function removeInput(button) {
+            const box = button.closest('.box');
+            const inputArea = box.querySelector('.input-area');
+            const inputs = inputArea.querySelectorAll('input');
+
+            if (inputs.length > 1) {
+                inputArea.removeChild(inputs[inputs.length - 1]);
+            }
+        }
+
+        function saveAllData() {
+            const data = {};
+
+            document.querySelectorAll('.box').forEach(box => {
+                const title = box.querySelector('h2').innerText;
+                const inputs = box.querySelectorAll('input');
+
+                data[title] = [];
+
+                inputs.forEach(input => {
+                    if (input.value.trim() !== '') {
+                        data[title].push(input.value.trim());
+                    }
+                });
+            });
+
+            localStorage.setItem('swotData', JSON.stringify(data));
+            alert("your data saved successfully!");
+            console.log(data);
+        }
+
+        window.onload = function () {
+            const savedData = JSON.parse(localStorage.getItem('swotData'));
+            if (!savedData) return;
+
+            document.querySelectorAll('.box').forEach(box => {
+                const title = box.querySelector('h2').innerText;
+                const inputArea = box.querySelector('.input-area');
+
+                inputArea.innerHTML = '';
+
+                if (savedData[title]) {
+                    savedData[title].forEach(value => {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.className = 'form-control mb-3';
+                        input.value = value;
+                        inputArea.appendChild(input);
+                    });
+                }
+            });
+        };
+    </script>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
